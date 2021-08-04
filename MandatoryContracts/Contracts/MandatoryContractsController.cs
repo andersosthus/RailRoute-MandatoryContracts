@@ -15,6 +15,7 @@ namespace MandatoryContracts.Contracts
         protected GameController GameController { get; private set; }
         protected ContractController ContractController { get; private set; }
         protected ITimeController TimeController { get; private set; }
+        protected IStationRepository StationRepository { get; private set; }
 
         private TimeSpan previousExecution;
 
@@ -26,6 +27,7 @@ namespace MandatoryContracts.Contracts
             GameController = gameController;
             ContractController = gameController.ContractController;
             TimeController = gameController.TimeController;
+            StationRepository = gameController.GetStationRepository();
 
             NonRejectables.Clear();
 
@@ -67,7 +69,7 @@ namespace MandatoryContracts.Contracts
                 });
 
                 // Generate a new contract if we are so inclined
-                if(UnityEngine.Random.value < 0.005)
+                if(UnityEngine.Random.value < 0.002)
                 {
                     Logger.Debug("Generating mandatory contract!");
                     GenerateMandatoryContract();
@@ -77,6 +79,13 @@ namespace MandatoryContracts.Contracts
 
         private void GenerateMandatoryContract()
         {
+            // If there is more Mandatory contracts that (Stations - 1) * 2, then don't generate more
+            var activeStations = StationRepository.GetStations().Count(x => x.Active);
+            if (NonRejectables.Count >= (activeStations - 1) * 2)
+            {
+                return;
+            }
+
             var contractGenerator = ContractController.ContractGenerator;
 
             Contract contract;
