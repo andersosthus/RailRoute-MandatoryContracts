@@ -61,10 +61,11 @@ namespace MandatoryContracts.Contracts
                 // Check if we got any contracts that needs to be accepted
                 NonRejectables.ForEach(x =>
                 {
-                    if(x.Contract.Status == ContractStatus.NEW && TimeController.CurrentTime >= x.AutoAcceptAt)
+                    var contract = ContractController.Contracts.Find(c => c.ContractNumber == x.ContractID);
+                    if(contract.Status == ContractStatus.NEW && TimeController.CurrentTime >= x.AutoAcceptAt)
                     {
                         Logger.Debug($"AutoAcceptedAt {TimeController.CurrentTime}");
-                        ContractController.AcceptContract(x.Contract);
+                        ContractController.AcceptContract(contract);
                     }
                 });
 
