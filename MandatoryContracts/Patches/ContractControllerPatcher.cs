@@ -41,5 +41,25 @@ namespace MandatoryContracts.Patches
                 Logger.Debug("Fulfilled mandatory contract removed");
             }
         }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("OfferFinalContract")]
+        static bool OfferFinalContract(Contract contract, ContractController __instance)
+        {
+            // if this is a regular contract, let the original code run
+            var isNonRejectable = MandatoryContractsController.IsContractMandatory(contract);
+            if(!isNonRejectable)
+            {
+                return true;
+            }
+
+            // it's one of our contracts, let's do our thing and prevent the original code from running
+            contract.Prototype.CreateScheduleFromRun(contract.Prototype.ActualVisits);
+            contract.RecalculateRewardFromTrain(contract.Prototype);
+            contract.DispatchedCount++;
+            __instance.AcceptContractAfterTrial(contract);
+
+            return false;
+        }
     }
 }
