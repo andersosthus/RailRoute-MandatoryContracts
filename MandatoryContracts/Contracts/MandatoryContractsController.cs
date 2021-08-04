@@ -69,7 +69,7 @@ namespace MandatoryContracts.Contracts
                 });
 
                 // Generate a new contract if we are so inclined
-                if(UnityEngine.Random.value < 0.002)
+                if(UnityEngine.Random.value < 0.001)
                 {
                     Logger.Debug("Generating mandatory contract!");
                     GenerateMandatoryContract();
