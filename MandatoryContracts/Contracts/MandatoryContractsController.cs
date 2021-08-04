@@ -79,9 +79,10 @@ namespace MandatoryContracts.Contracts
 
         private void GenerateMandatoryContract()
         {
-            // If there is more Mandatory contracts that (Stations - 1) * 2, then don't generate more
+            // Limit the amount of Mandatory contracts
             var activeStations = StationRepository.GetStations().Count(x => x.Active);
-            if (NonRejectables.Count >= (activeStations - 1) * 2)
+            var maxActiveContracts = activeStations <= 3 ? 2 : (activeStations - 1) * 2;
+            if (NonRejectables.Count >= maxActiveContracts)
             {
                 return;
             }
