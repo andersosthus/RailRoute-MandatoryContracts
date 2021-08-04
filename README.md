@@ -25,7 +25,7 @@ Windows:
 %UserProfile%\AppData\LocalLow\bitrich\Rail Route\mods\MandatoryContracts
 
 Simply put %UserProfile%\AppData\LocalLow\bitrich\Rail Route\ into your explorer location and hit enter
-You may need to create the folder mods
+You may need to create the `mods` folder
 
 Linux (untested):
 ~/.config/unity3d/bitrich/Rail Route/mods/MandatoryContracts

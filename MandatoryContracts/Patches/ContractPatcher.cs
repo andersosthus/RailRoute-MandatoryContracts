@@ -11,12 +11,14 @@ namespace MandatoryContracts.Patches
         [HarmonyPatch("IsRejectable", MethodType.Getter)]
         static void IsRejectable(Contract __instance, ref bool __result)
         {
-            var isNonRejectable = MandatoryContractsController.IsContractMandatory(__instance);
+            var isMandatory = MandatoryContractsController.IsContractMandatory(__instance);
 
-            if (isNonRejectable)
+            if (!isMandatory)
             {
-                __result = false;
+                return;
             }
+
+            __result = false;
         }
     }
 }
